@@ -1,7 +1,9 @@
+# [BUG]
 # pass in x and filename, print x to file
 .macro print_int_file(%x, %filename)	
 .data
 	file: .asciiz %filename	# file = %filename
+	value: .word x	# value = passed x
 .text 
 	fileopen:
 		li $v0, 13	# $v0 = 13
@@ -12,7 +14,7 @@
 	filewrite:
 		move $a0, $v0	# load file description $a0
 		li $v0, 15	# $v0 = 15
-		la $a1, %x	# load address of x to $a1
+		la $a1, value	# load address of value to $a1
 		li $a2, 4	# buffer length of int (4)
 		syscall
 	fileclose:
@@ -21,14 +23,6 @@
 		syscall		# call close file
 .end_macro 
 
-.macro hello
-.data
-	hi: .asciiz "hello word"
-.text
-	li $v0, 4
-	la $a0, hi
-	syscall
-.end_macro 
 
 .macro test_write
 .data
