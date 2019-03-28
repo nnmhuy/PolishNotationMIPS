@@ -4,15 +4,15 @@
 # $s2: length of notation
 # $s3: array of result
 # $s4: isOperator of result
+# $s5: length of result list
 # $t0: loop index
-# $t1: stack top
 # $t2: output list index
 
 .data
 .text 
 	li $t0, 0	# $t0 = 0
-	li $t1, 0	# $t1 = 0
 	li $t2, 0	# $t2 = 0
+	li $s5, 0	# $s5 = 0
 loop:
 	slt $t3, $t0, $s2	# check if not loop through array
 	beq $t3, $zero, pop_stack	# if done call pop_stack
@@ -68,6 +68,7 @@ process_close_parenthese:
 pop_stack:
 	beq $sp, $fp, exit_infix_to_postfix	# if empty stack => exit
 	sll $t3, $t2, 2	# $t3 = $t2 * 4
+	addi $t2, $t2, 1	# $t2 = $t2 + 1
 	add $t7, $s4, $t3	# address of current isOperator list memory
 	add $t3, $s3, $t3	# address of current result list memory
 	lw $t4, 0($sp)	# get top operator from stack
@@ -76,5 +77,6 @@ pop_stack:
 	sw $t8, 0($t7)	# append isOperator to result list
 	j pop_stack	# while loop of pop_stack
 exit_infix_to_postfix:
+	mov $s5, $t2	# $s5 = $t2
 	jr $ra	# return to caller function
 	
