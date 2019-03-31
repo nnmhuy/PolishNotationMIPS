@@ -7,7 +7,7 @@
 # $s5: length of result list
 # $t0: loop index
 # $t2: output list index
-
+.macro infix_to_postfix ()
 .data
 .text 
 	li $t0, 0	# $t0 = 0
@@ -77,6 +77,6 @@ pop_stack:
 	sw $t8, 0($t7)	# append isOperator to result list
 	j pop_stack	# while loop of pop_stack
 exit_infix_to_postfix:
-	mov $s5, $t2	# $s5 = $t2
-	jr $ra	# return to caller function
-	
+	move $s5, $t2	# $s5 = $t2
+	# jr $ra	# return to caller function
+.end_macro

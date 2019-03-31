@@ -1,4 +1,4 @@
-.include "util.asm"
+
 # convert inter to ascii array
 .macro i_to_a (%x, %address)
 .text

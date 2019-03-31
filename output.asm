@@ -62,6 +62,7 @@ newchar: .space 1
 	bne $t3, $zero, op_open
 	slti $t3, $t0, 7 # if operator is ) 
 	bne $t3, $zero, op_close
+	j op_print
 op_plus:
 	li $t3, '+'
 	sb $t3, 0($t1) # save char to t1

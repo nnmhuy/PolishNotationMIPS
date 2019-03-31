@@ -1,5 +1,5 @@
 .data
-	file_loc: .asciiz "textlinebyline.txt" #note: when launching from commandline, test.asm should be within the same folder as Mars.jar
+	file_loc: .asciiz "testread.txt" #note: when launching from commandline, test.asm should be within the same folder as Mars.jar
 	buffer: .space 1024 #buffer of 1024
 	new_line: .asciiz "\n"  #where would I actually use this?
 

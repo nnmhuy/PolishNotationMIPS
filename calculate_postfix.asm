@@ -7,7 +7,7 @@
 # $t1: address in array postfix
 # $t2: address in isOperator array
 # $t3: current value
-
+.macro calculate_postfix ()
 .data
 
 .text
@@ -64,4 +64,5 @@ push_stack:
 save_result:
 	lw $s7, 0($sp)	# pop last final result from stack
 	addi $sp, $sp, 4	# pop from stack
-	jr $ra	# return to caller function
+	# jr $ra	# return to caller function
+.end_macro
