@@ -13,6 +13,7 @@
 	li $t0, 0	# $t0 = 0
 	li $t2, 0	# $t2 = 0
 	li $s5, 0	# $s5 = 0
+	move $fp, $sp
 loop:
 	slt $t3, $t0, $s2	# check if not loop through array
 	beq $t3, $zero, pop_stack	# if done call pop_stack

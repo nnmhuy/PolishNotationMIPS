@@ -30,6 +30,7 @@ ex_go_print_int:
 ex_go_print_operator:
 	print_operator($t4, %filename)
 ex_end_body:
+	print_space (%filename)
 	lw $t0, 0($sp)
 	lw $t1, 4($sp)
 	lw $t2, 8($sp)
@@ -116,6 +117,18 @@ newline: .space 1
 .text
 	la $t1, newline
 	li $t0, 10
+	sb $t0, 0($t1) # save 1 to t1
+	li $t2, 1 #length
+	print_string_append ($t1, $t2, %filename)
+.end_macro	
+
+# print space
+.macro print_space (%filename) 
+.data
+newline: .space 1
+.text
+	la $t1, newline
+	li $t0, 32
 	sb $t0, 0($t1) # save 1 to t1
 	li $t2, 1 #length
 	print_string_append ($t1, $t2, %filename)

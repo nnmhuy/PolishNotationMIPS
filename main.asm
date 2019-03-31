@@ -51,7 +51,6 @@ loop_body:
 	print_new_line ("result.txt")
 	load_all_t
 loop_increase:
-	print_int_test($t0)
 	get_one_line ($t0, $t1, $t2) # get line 
 	move $t3, $v0
 	jal skip_line
