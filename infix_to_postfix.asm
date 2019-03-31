@@ -7,16 +7,18 @@
 # $s5: length of result list
 # $t0: loop index
 # $t2: output list index
+
 .macro infix_to_postfix ()
 .data
 .text 
+	move $fp, $sp	# init $sp
 	li $t0, 0	# $t0 = 0
 	li $t2, 0	# $t2 = 0
 	li $s5, 0	# $s5 = 0
-	move $fp, $sp
 loop:
 	slt $t3, $t0, $s2	# check if not loop through array
 	beq $t3, $zero, pop_stack	# if done call pop_stack
+	j process_loop	# jump into process_loop
 process_loop:
 	sll $t3, $t0, 2	# $t3 = $t0 * 4
 	add $t4, $s1, $t3	# address of isOperator?
@@ -37,7 +39,9 @@ process_operand:
 	j loop	# continue loop
 process_operator:
 	subi $t4, $t6, 6	# $t4 = $t6 - 6
-	beq $t4, $zero, process_close_parenthese
+	beq $t4, $zero, process_close_parenthese	# if close perenthese => call process_close_parenthese
+	subi $t4, $t6, 5	# $t4 = $t6 - 5
+	beq $t4, $zero, process_open_parenthese	# if open perenthese => call process_open_parenthese
 	j process_basic	# call process_basic
 process_basic:
 	beq $sp, $fp, end_basic # if operator list is empty => call end_basic
@@ -55,10 +59,14 @@ end_basic:
 	subi $sp, $sp, 4	# reserve 1 more word in stack
 	sw $t6, 0($sp)	# push operator to stack
 	j loop	# continue loop
+process_open_parenthese:
+	subi $sp, $sp, 4	# reserve 1 more word in stack
+	sw $t6, 0($sp)	# push operator to stack
+	j loop	# continue loop
 process_close_parenthese:
 	lw $t5, 0($sp)	# get top of operator stack
 	addi $sp, $sp, 4	# pop from operator stack
-	subi $t4, $t6, 5	# compare operator with (
+	subi $t4, $t5, 5	# compare operator with (
 	beq $t4, $zero, loop	# if ( => jump to loop
 	sw $t5, 0($t3)	# append operator to result list
 	sw $t8, 0($t7)	# append isOperator of result list

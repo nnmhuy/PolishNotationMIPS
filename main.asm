@@ -1,3 +1,4 @@
+.include "util.asm"
 .include "output.asm"
 .include "input.asm"
 .include "calculate_postfix.asm"
@@ -82,4 +83,5 @@ setIsPre:
 	print_string_new_file($t7, $t5, "prefix.txt")
 	jr $ra
 exit:
-	
+	li      $v0, 10              # terminate program run and
+    	syscall                      # Exit 
