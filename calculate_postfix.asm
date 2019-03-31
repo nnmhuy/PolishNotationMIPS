@@ -44,17 +44,17 @@ process_operator:
 	slti $t7, $t3, 5 # if operator is / => $t7 = 1
 	bne $t7, $zero, process_divide	# if $t3 is / => process_divide
 process_plus:
-	add $t7, $t5, $t6	# $t7 = $t5 + $t6
+	add $t7, $t6, $t5	# $t7 = $t6 + $t5
 	j push_stack
 process_minus:
-	sub $t7, $t5, $t6	# $t7 = $t5 - $t6
+	sub $t7, $t6, $t5	# $t7 = $t6 - $t5
 	j push_stack
 process_multiply:
-	mult $t5, $t6	# $LO = $t5 * $t6
+	mult $t6, $t5	# $LO = $t6 * $t5
 	mflo $t7	# $t7 = result of multiplication
 	j push_stack
 process_divide:
-	div $t5, $t6	# $LO = $t5 / $t6
+	div $t6, $t5	# $LO = $t6 / $t5
 	mflo $t7	# $t7 = result of division
 	j push_stack
 push_stack:
