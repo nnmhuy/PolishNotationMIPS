@@ -41,16 +41,18 @@ loop_body:
 	print_string_append($t1, $t3, "testwrite.txt")
 	parse_line ($t1, $t3)
 	store_all_t
-	#infix_to_postfix
-	#calculate_postfix
+	infix_to_postfix
+	calculate_postfix
 	load_all_t
 	# print result
-	print_expression ($s0, $s1, $s2, "postfix.txt")
+	store_all_t
+	print_expression ($s3, $s4, $s5, "postfix.txt")
 	print_int ($s7, "result.txt") 
 	print_new_line ("result.txt")
+	load_all_t
 loop_increase:
-	
-	get_one_line ($t0, $t1, $t2) # get line first express line
+	print_int_test($t0)
+	get_one_line ($t0, $t1, $t2) # get line 
 	move $t3, $v0
 	jal skip_line
 	

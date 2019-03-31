@@ -41,7 +41,6 @@ parse_save_num:
 	li $t1, 1  # should be operator = true
 	j parse_increase
 parse_operator:
-	print_int_test($s2)
 	# t7 is op
 	li $t6, '+'
 	beq $t6, $t7, parse_plus
@@ -93,6 +92,7 @@ parse_save_operator:
 	add $t7, $t7, $s1
 	li $t6, 1 	# store isOp[s2] = true
 	sw $t6, ($t7)
+	addi $s2, $s2, 1 # increase s2
 	li $t0, 0  # is negative = false
 	li $t1, 0  # should be operator = false
 	j parse_increase
