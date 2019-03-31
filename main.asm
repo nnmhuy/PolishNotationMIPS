@@ -1,8 +1,8 @@
-.include "util.asm"
 .include "output.asm"
 .include "input.asm"
 .include "calculate_postfix.asm"
 .include "infix_to_postfix.asm"
+.include "util.asm"
 
 # t0 buffer
 # t1 oneline
@@ -41,16 +41,30 @@
 loop_body:
 	parse_line ($t1, $t3)
 	store_all_t
-	#infix_to_postfix
-	#calculate_postfix
-	reverse_for_prefix($s0, $s1, $s2)
+	infix_to_postfix
+	calculate_postfix
 	load_all_t
-	# print result
+	# print result common
 	store_all_t
-	print_expression ($s0, $s1, $s2, "postfix.txt")
 	print_int ($s7, "result.txt") 
 	print_new_line ("result.txt")
 	load_all_t
+	beqz $t4, solve_post
+solve_pre:
+	reverse_for_prefix ($s0, $s1, $s2)
+	store_all_t
+	infix_to_postfix
+	load_all_t
+	reverse_for_prefix ($s3, $s4, $s5)
+	store_all_t
+	print_expression ($s3, $s4, $s5, "prefix.txt") 
+	load_all_t
+	j loop_increase
+solve_post:
+	store_all_t
+	print_expression ($s3, $s4, $s5, "postfix.txt")
+	load_all_t
+	j loop_increase
 loop_increase:
 	get_one_line ($t0, $t1, $t2) # get line 
 	move $t3, $v0
@@ -83,5 +97,4 @@ setIsPre:
 	print_string_new_file($t7, $t5, "prefix.txt")
 	jr $ra
 exit:
-	li      $v0, 10              # terminate program run and
-    	syscall                      # Exit 
+	
