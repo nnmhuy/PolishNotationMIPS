@@ -39,15 +39,15 @@
 	
 	j loop_increase
 loop_body:
-	print_string_append($t1, $t3, "testwrite.txt")
 	parse_line ($t1, $t3)
 	store_all_t
-	infix_to_postfix
-	calculate_postfix
+	#infix_to_postfix
+	#calculate_postfix
+	reverse_for_prefix($s0, $s1, $s2)
 	load_all_t
 	# print result
 	store_all_t
-	print_expression ($s3, $s4, $s5, "postfix.txt")
+	print_expression ($s0, $s1, $s2, "postfix.txt")
 	print_int ($s7, "result.txt") 
 	print_new_line ("result.txt")
 	load_all_t

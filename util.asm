@@ -15,7 +15,68 @@ newline: .asciiz "\n"
   	lw   $v0, 4($sp)
   	addi $sp, $sp, 8
 .end_macro
-	
+
+.macro reverse_for_prefix (%data, %isOp, %length)
+.text
+	store_all_t
+	la $t0, (%data)
+	la $t1, (%isOp)
+	la $t2, (%length)
+	sll $t2, $t2, 2
+	subi $t2, $t2, 4
+	add $t3, $t0, $t2 # end of data
+	add $t4, $t1, $t2 # end of isOp
+	j reverse_condition
+reverse_loop:
+	reverse_bracket($t0, $t1)
+	reverse_bracket($t3, $t4)
+	lw $t5, ($t0)
+	lw $t6, ($t3)
+	sw $t5, ($t3)
+	sw $t6, ($t0)
+	addi $t0, $t0, 4
+	addi $t3, $t3, -4 
+	lw $t5, ($t1)
+	lw $t6, ($t4)
+	sw $t5, ($t4)
+	sw $t6, ($t1)
+	addi $t1, $t1, 4
+	addi $t4, $t4, -4 
+reverse_condition:
+	sub $t5, $t3, $t0 # t5 = end - begin
+	bgtz $t5, reverse_loop
+	beqz $t5, reverse_self
+	j exit
+reverse_self:
+	reverse_bracket ($t3, $t4)
+	j exit
+exit:
+	load_all_t
+.end_macro
+
+.macro reverse_bracket (%positionData, %positionOp)
+.text
+	store_all_t
+	la $t0, (%positionData)
+	la $t5, (%positionOp)
+	lw $t6, ($t5)
+	beqz $t6, exit # if not operator => exit
+	lw $t1, ($t0)
+	li $t2, 5 	# (
+	li $t3, 6	# )
+	beq $t1, $t2, save_close 
+	beq $t1, $t3, save_open
+	j exit
+save_close:
+	sw $t3, ($t0)
+	j exit
+save_open:
+	sw $t2, ($t0)
+	j exit
+exit:
+	load_all_t
+.end_macro
+
 .macro store_all_s
 .text
 	addi $sp, $sp, -32
