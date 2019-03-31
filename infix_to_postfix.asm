@@ -46,8 +46,38 @@ process_operator:
 process_basic:
 	beq $sp, $fp, end_basic # if operator list is empty => call end_basic
 	lw $t5, 0($sp)	# get top of operator stack
+	subi $t4, $t5, 5
+	beq $t4, $zero, end_basic	# if ( => end_basic
 	sle $t4, $t6, $t5	# if $t6 <= $t5 => $t4 = 1
-	bne $t4, $zero, end_basic	# if having higher precedence => call end_basic
+	beq $t4, $t8, next_basic
+	j second_compare
+second_compare:
+	subi $t4, $t6, 1
+	beq $t4, $zero, compare_plus
+	subi $t4, $t6, 2
+	beq $t4, $zero, compare_minus
+	subi $t4, $t6, 3
+	beq $t4, $zero, compare_multi
+	subi $t4, $t6, 4
+	beq $t4, $zero, compare_div
+	j end_basic
+compare_plus:
+	subi $t4, $t5, 2
+	beq $t4, $zero, next_basic
+	j end_basic
+compare_minus:
+	subi $t4, $t5, 1
+	beq $t4, $zero, next_basic
+	j end_basic
+compare_multi:
+	subi $t4, $t5, 4
+	beq $t4, $zero, next_basic
+	j end_basic
+compare_div:
+	subi $t4, $t5, 3
+	beq $t4, $zero, next_basic
+	j end_basic
+next_basic:
 	addi $sp, $sp, 4	# pop from operator stack
 	sw $t5, 0($t3)	# append operator to result list
 	sw $t8, 0($t7)	# append isOperator to result list
