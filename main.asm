@@ -41,12 +41,12 @@
 loop_body:
 	parse_line ($t1, $t3)
 	
-	print_int_test($t4)
+	
 	store_all_t
 	infix_to_postfix
 	calculate_postfix
 	load_all_t
-	print_int_test($t4)
+	
 	
 	# print result common
 	store_all_t

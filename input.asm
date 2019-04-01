@@ -58,12 +58,14 @@ parse_operator:
 parse_plus:
 	jal parse_skip_if_current
 	li $t6, 1
+	li $t1, 0  # should be operator = false
 	j parse_save_operator
 parse_minus:
 	beqz $t1, parse_minus_operand
 parse_minus_operator:
 	jal parse_skip_if_current
 	li $t6, 2
+	li $t1, 0  # should be operator = false
 	j parse_save_operator
 parse_minus_operand:
 	xori $t0, $t0, 1
@@ -71,10 +73,12 @@ parse_minus_operand:
 parse_mul:
 	jal parse_skip_if_current
 	li $t6, 3
+	li $t1, 0  # should be operator = false
 	j parse_save_operator
 parse_div:
 	jal parse_skip_if_current
 	li $t6, 4
+	li $t1, 0  # should be operator = false
 	j parse_save_operator
 parse_open:
 	jal parse_skip_if_current
@@ -94,7 +98,7 @@ parse_save_operator:
 	sw $t6, ($t7)
 	addi $s2, $s2, 1 # increase s2
 	li $t0, 0  # is negative = false
-	li $t1, 0  # should be operator = false
+	
 	j parse_increase
 parse_increase:
 	addi $t5, $t5, 1
